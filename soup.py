@@ -7,5 +7,6 @@ soup = BeautifulSoup(content, "html.parser")
 
 # print(soup.prettify())
 
-
+for item in soup.findAll("table",{"class":"ar-stats"}):
+    print(item)
 
