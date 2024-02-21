@@ -1,0 +1,288 @@
+<table class="wikitable ar-stats">
+ <tbody>
+  <tr>
+   <th colspan="7">
+    基础属性
+   </th>
+  </tr>
+  <tr>
+   <th colspan="2">
+   </th>
+   <th>
+    攻击
+   </th>
+   <th>
+    生命
+   </th>
+   <th>
+    现实防
+    <span style="user-select:none;">
+     ‍
+    </span>
+    御
+   </th>
+   <th>
+    精神防
+    <span style="user-select:none;">
+     ‍
+    </span>
+    御
+   </th>
+   <th>
+    暴击技
+    <span style="user-select:none;">
+     ‍
+    </span>
+    巧
+   </th>
+  </tr>
+  <tr>
+   <th colspan="2">
+    1级
+   </th>
+   <td>
+    249
+   </td>
+   <td>
+    1626
+   </td>
+   <td>
+    117
+   </td>
+   <td>
+    113
+   </td>
+   <td>
+    191
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    30级
+   </th>
+   <td>
+    378
+   </td>
+   <td>
+    2468
+   </td>
+   <td>
+    178
+   </td>
+   <td>
+    172
+   </td>
+   <td>
+    191
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉一1
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    416
+   </td>
+   <td>
+    2721
+   </td>
+   <td>
+    195
+   </td>
+   <td>
+    189
+   </td>
+   <td>
+    216
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉一40
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    699
+   </td>
+   <td>
+    4137
+   </td>
+   <td>
+    297
+   </td>
+   <td>
+    288
+   </td>
+   <td>
+    216
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉二1
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    671
+   </td>
+   <td>
+    4390
+   </td>
+   <td>
+    314
+   </td>
+   <td>
+    305
+   </td>
+   <td>
+    241
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉二50
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    944
+   </td>
+   <td>
+    6169
+   </td>
+   <td>
+    443
+   </td>
+   <td>
+    430
+   </td>
+   <td>
+    241
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉三1
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    979
+   </td>
+   <td>
+    6400
+   </td>
+   <td>
+    459
+   </td>
+   <td>
+    446
+   </td>
+   <td>
+    266
+   </td>
+  </tr>
+  <tr>
+   <th colspan="2">
+    洞悉三60
+    <span style="user-select:none;">
+     ‍
+    </span>
+    级
+   </th>
+   <td>
+    1110
+   </td>
+   <td>
+    7258
+   </td>
+   <td>
+    520
+   </td>
+   <td>
+    505
+   </td>
+   <td>
+    266
+   </td>
+  </tr>
+  <tr>
+   <th class="ttitle" colspan="7">
+    特殊属性
+   </th>
+  </tr>
+  <tr>
+   <th>
+    暴击率
+   </th>
+   <th>
+    抗暴率
+   </th>
+   <th>
+    暴击创
+    <span style="user-select:none;">
+     ‍
+    </span>
+    伤
+   </th>
+   <th>
+    暴击防
+    <span style="user-select:none;">
+     ‍
+    </span>
+    御
+   </th>
+   <th>
+    创伤加
+    <span style="user-select:none;">
+     ‍
+    </span>
+    成
+   </th>
+   <th>
+    受创减
+    <span style="user-select:none;">
+     ‍
+    </span>
+    免
+   </th>
+   <th>
+    术法威
+    <span style="user-select:none;">
+     ‍
+    </span>
+    力
+   </th>
+  </tr>
+  <tr>
+   <td style="height:30px">
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+   <td>
+   </td>
+  </tr>
+ </tbody>
+</table>
