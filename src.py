@@ -3,6 +3,8 @@ import re
 import requests
 from bs4 import BeautifulSoup
 
+## Get a List of All Arcanist Chinese Names
+# getArcanist :: [Text]
 def getArcanistList():
     content = requests.get("https://res1999.huijiwiki.com/wiki/%E8%A7%92%E8%89%B2%E5%88%97%E8%A1%A8").text
     soup = BeautifulSoup(content, "html.parser")
@@ -14,25 +16,33 @@ def getArcanistList():
 
     return ArcanistList
 
+##Return the RLCONF object in Echart, which is a json object.
+##It need to merge with the Attribute parsing soon. However, Currently it is:
+# parseArcanistAttribute :: Soup a -> Dict a
 def parseArcanistAttribute(soup):
     js_code = soup.find("script").string
-
     pattern = r'RLCONF\s*=\s*({.*?});'
     match = re.search(pattern, js_code, re.DOTALL)
+    rlconf_string = match.group(1)
+    rlconf_dict = json.loads(rlconf_string)
 
-    if match:
-        rlconf_string = match.group(1)
-        rlconf_dict = json.loads(rlconf_string)
-        return rlconf_dict
-    else:
-        print("RLCONF not found in the JavaScript code.")
+    Attribute = {}
+    for AttrTypeIndex in range(5):
+        AttrType = AttrTypeList[AttrTypeIndex]
+        Attribute[AttrType]=[]
+        for Insight in range(4):
+            Attribute[AttrType].append([])
+            Attribute[AttrType][Insight].append(0)
+            for Level in range([30,40,50,60][Insight]):
+                Attribute[AttrType][Insight].append(rlconf_dict["hjEChartsConfig"][""]["option"]["options"][Insight]["series"][AttrTypeIndex]["data"][Level][1])
 
-def formatAttr(Attribute, AttrType):
-    print(f"({getDiff(Attribute[AttrType])}, {Attribute[AttrType][0][1]}, {Attribute[AttrType][0][30]}, {Attribute[AttrType][1][40]}, {Attribute[AttrType][2][50]}, {Attribute[AttrType][3][60]})")
+    return Attribute
+### DONE. Sweet!
 
+##Get Resonant Type with given soup
+# getResonanceType :: Soup a -> Text ResonanceType
 def getResonanceType(soup):
     imgsrc = soup.select("div.resonate-tabber-item:nth-child(1) > div:nth-child(1) > div:nth-child(1) > div:nth-child(1) > img:nth-child(1)")[0]["alt"]
-#   print(imgsrc)
     match imgsrc:
         case "Fw 011.png":
             return "TypeZ"
@@ -49,14 +59,16 @@ def getResonanceType(soup):
         case _:
             return None
 
-
+##Get the in-game Arcanist English name
+##It may contain specific characters like Russian Characters, spaces and dots
+##But for now it does not matter as it is stored as Text
+# getName :: soup a -> Text a
 def getName(soup):
     return soup.select("#firstHeading > h1:nth-child(2) > span:nth-child(1) > span:nth-child(1) > small:nth-child(1)")[0].text
 
-# #firstHeading > h1:nth-child(2) > span:nth-child(1) > span:nth-child(1) > small:nth-child(1)
-
-# return a soup object::
-def soup(url):
+## return a soup object of a URL
+# soup :: Text url -> Soup a
+def getSoup(url):
     content = requests.get(url).text
     soup = BeautifulSoup(content, "html.parser")
     return soup
@@ -86,28 +98,47 @@ def getDiff(data):
             return diff
     return -1
 
+##Format the specific Attribute.Attrtype to String, calling the getDiff func to calc InsBonus
+# formatAttr :: Dict a -> Text a -> Text a
+def formatAttr(Attribute, AttrType):
+    return f"({getDiff(Attribute[AttrType])}, {Attribute[AttrType][0][1]}, {Attribute[AttrType][0][30]}, {Attribute[AttrType][1][40]}, {Attribute[AttrType][2][50]}, {Attribute[AttrType][3][60]})"
+
+##The final output of this code. Well i suppose its the hardest part
+# printInstance :: Dict a -> Text name -> Text resType -> Text typeName -> IO ()
 def printInstance(Attribute, Name, ResType, TypeName):
-    print("{-# LANGUAGE DataKinds, TypeFamilies #-}")
-    print(""" module Hsco.Reco.Arcanist.{TypeName} (
-    {TypeName}
-) where
+    
+##  InsBonus = [Int]
+    InsBonus = []
+    for AttrType in AttrTypeList:
+        InsBonus.append(getDiff(Attribute[AttrType]))
 
-import Hsco.Reco.Resonance (ResonanceType(..))
-import Hsco.Reco.Arcanist (IsArcanist(..), ArcanistPlainData(..), fromRaw)
+##  Formatted = [Text]
+    Formatted = []
+    for AttrType in AttrTypeList:
+        Formatted.append(formatAttr(Attribute, AttrType))
 
-data {TypeName}
-
-instance IsArcanist {TypeName} where
-    arcName = "{Name}"
-    arcPlainData = ArcanistPlainData \{
-        atkGen = fromRaw {formatAttr(Attributes, "Attack")},
-        hpGen = fromRaw {formatAttr(Attributes, "Health")},
-        rdefGen = fromRaw {formatAttr(Attributes, "RealDef")},
-        mdefGen = fromRaw {formatAttr(Attributes, "MentDef")},
-        critGen = fromRaw {formatAttr(Attributes, "CritTech")}
-    \}
-
-    type ArcResType {TypeName} = TypeName""").format()
+    with open("Arcanist/"+TypeName+".hs","w") as file:
+        file.write( "{-# LANGUAGE DataKinds, TypeFamilies #-}\n")
+        file.write(f"module Hsco.Reco.Arcanist.{TypeName} (\n")
+        file.write(f"    {TypeName}\n")
+        file.write(f") where\n")
+        file.write(f"\n")
+        file.write(f"import Hsco.Reco.Resonance (ResonanceType(..))\n")
+        file.write(f"import Hsco.Reco.Arcanist (IsArcanist(..), ArcanistPlainData(..), fromRaw)\n")
+        file.write(f"\n")
+        file.write(f"data {TypeName}\n")
+        file.write(f"\n")
+        file.write(f"instance IsArcanist {TypeName} where\n")
+        file.write(f"    arcName = \"{Name}\"\n")
+        file.write( "    arcPlainData = ArcanistPlainData {\n")
+        file.write(f"        atkGen = fromRaw {Formatted[0]}\n")
+        file.write(f"        hpGen = fromRaw {Formatted[1]}\n")
+        file.write(f"        rdefGen = fromRaw {Formatted[2]}\n")
+        file.write(f"        mdefGen = fromRaw {Formatted[3]}\n")
+        file.write(f"        critGen = fromRaw {Formatted[4]}\n")
+        file.write( "    }\n")
+        file.write(f"\n")
+        file.write(f"    type ArcResType {TypeName} = {ResType}\n")
     
 # {-# LANGUAGE DataKinds, TypeFamilies #-}
 # module Hsco.Reco.Arcanist.ThirtySeven (
@@ -132,40 +163,23 @@ instance IsArcanist {TypeName} where
 #     type ArcResType ThirtySeven = TypeX
 
 # TypeX TypeZ TypeU TypeT
+##---------------------------------------------------------------------------------
+##Main Part of Code
 # main :: IO ()
-# span style="display: flex;flex-direction: column;"
+
+## Some kind of meta data i will be used
+AttrTypeList = ["Attack", "Health", "RealDef", "MentDef", "CritTech"]
+typeNameDict = None
+
+
+##Now, Get shamane's soup name restype attribute
+##and define its typeName = Shamane
 
 url = "https://res1999.huijiwiki.com/wiki/%E9%AC%83%E6%AF%9B%E6%B2%99%E7%A0%BE"
-soup = soup(url)
+soup = getSoup(url)
 name = getName(soup)
-AttrSoup = parseArcanistAttribute(soup)
+Attribute = parseArcanistAttribute(soup) # a dict actually now
 resType = getResonanceType(soup)
 
-#Attribute :: (Text AttrType, Int Insight, Int Level, [Int] Data) => AttrType -> Insight -> Level -> Data
-
-AttrTypeList = ["Attack", "Health", "RealDef", "MentDef", "CritTech"]
-Attribute = {}
-for AttrTypeIndex in range(5):
-    AttrType = AttrTypeList[AttrTypeIndex]
-    Attribute[AttrType]=[]
-    for Insight in range(4):
-        Attribute[AttrType].append([])
-        Attribute[AttrType][Insight].append(0)
-        for Level in range([30,40,50,60][Insight]):
-            Attribute[AttrType][Insight].append(AttrSoup["hjEChartsConfig"][""]["option"]["options"][Insight]["series"][AttrTypeIndex]["data"][Level][1])
-# print(Attribute["Attack"][0][30])
-
-AttrInsBonus = {}
-for AttrType in AttrTypeList:
-    AttrInsBonus[AttrType] = getDiff(Attribute[AttrType])
-
-# data StatGenerator = StatGenerator {
-#     insight :: Int, -- insight bonus
-#     stat01 :: Int, -- stat at insight 0 level 1
-#     stat030 :: Int,
-#     stat140 :: Int,
-#     stat250 :: Int,
-#     stat360 :: Int
-# }
-   
 printInstance(Attribute, name, resType, "Shamane")
+   
