@@ -1,5 +1,5 @@
 {-# LANGUAGE DataKinds, TypeFamilies #-}
- module Hsco.Reco.Arcanist.Shamane (
+module Hsco.Reco.Arcanist.Shamane (
     Shamane
 ) where
 

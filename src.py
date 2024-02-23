@@ -169,17 +169,101 @@ def printInstance(Attribute, Name, ResType, TypeName):
 
 ## Some kind of meta data i will be used
 AttrTypeList = ["Attack", "Health", "RealDef", "MentDef", "CritTech"]
-typeNameDict = None
+typeNameDict = {
+    "葛天": "GeTian",
+    "曲娘": "JiuNiangZi",
+    "伊索尔德": "Isolde",
+    "6": "Six",
+    "爱兹拉": "EzraTheodore",
+    "可燃点": "Spathodea",
+    "鬃毛沙砾": "Shamane",
+    "伽菈波那": "BlackDwarf",
+    "37": "ThirtySeven",
+    "马库斯": "Marcus",
+    "皮克勒斯": "Pickles",
+    "梅兰妮": "Melania",
+    "洁西卡": "Changeling",
+    "牙仙": "ToothFairy",
+    "新巴别塔": "MsNewBabel",
+    "温妮弗雷德": "Eternity",
+    "远旅": "Voyager",
+    "兔毛手袋": "MedicinePocket",
+    "泥鯭的士": "AnAnLee",
+    "百夫长": "Centurion",
+    "星锑": "Regulus",
+    "苏芙比": "Sotheby",
+    "未锈铠": "AKnight",
+    "红弩箭": "Lilya",
+    "槲寄生": "DruvisIII",
+    "小叶尼塞": "Enisej",
+    "和平乌鲁": "Ulu",
+    "沙丝绒": "DesertFlannel",
+    "坎吉拉": "Kanjira",
+    "挖掘艺术": "Diggers",
+    "恐怖通": "Horrorpedia",
+    "金蜜儿": "Blonney",
+    "喀嚓喀嚓": "Click",
+    "坦南特": "Tennant",
+    "玛蒂尔达": "MatildaBouanich",
+    "五色月": "Satsuki",
+    "讣告人": "Necrologist",
+    "斯奈德": "Schneider",
+    "气球派对": "BalloonParty",
+    "十四行诗": "Sonetto",
+    "帕米埃": "Dikke",
+    "柏林以东": "Bkornblume",
+    "夏利": "Charlie",
+    "婴儿蓝": "BabyBlue",
+    "玛丽莲": "Sweetheart",
+    "X": "X",
+    "埃里克": "Erick",
+    "小梅斯梅尔": "MesmerJr",
+    "吵闹鬼": "Poltergeist",
+    "莫桑女士": "MsMoissan",
+    "爱宠": "Rabies",
+    "TTT": "TTT",
+    "铅玻璃": "Cristallo",
+    "APPLe": "APPLe",
+    "红斗篷": "Mondlicht",
+    "雾行者": "OliverFog",
+    "狼群": "Pavia",
+    "芭妮芭妮": "BunnyBunny",
+    "冬": "Zima",
+    "小春雀儿": "Eagle",
+    "尼克·波顿": "NickBottom",
+    "斯普特尼克": "Sputnik",
+    "洋葱头": "Onion",
+    "哒哒达利": "DarleyClatter",
+    "贝蒂": "Bette",
+    "丽莎&路易斯": "TwinSleep",
+    "约翰·提托": "JohnTitor",
+    "莉拉妮": "Leilani",
+    "星之眼": "AlienT",
+    "拉拉泉": "LaSource",
+    "弄臣": "TheFool",
+    "门": "Door",
+    "无线电小姐": "MsRadio"
+        }
+
 
 
 ##Now, Get shamane's soup name restype attribute
 ##and define its typeName = Shamane
 
-url = "https://res1999.huijiwiki.com/wiki/%E9%AC%83%E6%AF%9B%E6%B2%99%E7%A0%BE"
-soup = getSoup(url)
-name = getName(soup)
-Attribute = parseArcanistAttribute(soup) # a dict actually now
-resType = getResonanceType(soup)
+# url = "https://res1999.huijiwiki.com/wiki/%E9%AC%83%E6%AF%9B%E6%B2%99%E7%A0%BE"
+# soup = getSoup(url)
+# name = getName(soup)
+# Attribute = parseArcanistAttribute(soup) # a dict actually now
+# resType = getResonanceType(soup)
+# 
+# printInstance(Attribute, name, resType, "Shamane")
 
-printInstance(Attribute, name, resType, "Shamane")
-   
+ArcanistList = getArcanistList()
+for Arcanist in ArcanistList:
+    soup = getSoup("https://res1999.huijiwiki.com/wiki/"+Arcanist)
+    name = getName(soup)
+    resType = getResonanceType(soup)
+    Attribute = parseArcanistAttribute(soup)
+
+    printInstance(Attribute,name,resType,typeNameDict[Arcanist])
+
