@@ -11,10 +11,10 @@ data Schneider
 instance IsArcanist Schneider where
     arcName = "Schneider"
     arcPlainData = ArcanistPlainData {
-        atkGen = fromRaw (32, 241, 367, 614, 916, 1077)
-        hpGen = fromRaw (168, 1257, 1908, 3199, 4770, 5611)
-        rdefGen = fromRaw (13, 103, 157, 262, 391, 459)
-        mdefGen = fromRaw (13, 103, 157, 262, 391, 459)
+        atkGen = fromRaw (32, 241, 367, 614, 916, 1077),
+        hpGen = fromRaw (168, 1257, 1908, 3199, 4770, 5611),
+        rdefGen = fromRaw (13, 103, 157, 262, 391, 459),
+        mdefGen = fromRaw (13, 103, 157, 262, 391, 459),
         critGen = fromRaw (47, 356, 356, 403, 450, 497)
     }
 

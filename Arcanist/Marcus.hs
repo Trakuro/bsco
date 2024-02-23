@@ -11,10 +11,10 @@ data Marcus
 instance IsArcanist Marcus where
     arcName = "Marcus"
     arcPlainData = ArcanistPlainData {
-        atkGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402)
-        hpGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402)
-        rdefGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402)
-        mdefGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402)
+        atkGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402),
+        hpGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402),
+        rdefGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402),
+        mdefGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402),
         critGen = fromRaw (134, 1000, 1000, 1134, 1268, 1402)
     }
 
