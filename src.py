@@ -39,6 +39,28 @@ def parseArcanistAttribute(soup):
     return Attribute
 ### DONE. Sweet!
 
+def parseArcanistAttributeLow(soup):
+    js_code = soup.find("script").string
+    pattern = r'RLCONF\s*=\s*({.*?});'
+    match = re.search(pattern, js_code, re.DOTALL)
+    rlconf_string = match.group(1)
+    rlconf_dict = json.loads(rlconf_string)
+
+    Attribute = {}
+    for AttrTypeIndex in range(5):
+        AttrType = AttrTypeList[AttrTypeIndex]
+        Attribute[AttrType]=[]
+        for Insight in range(4):
+            Attribute[AttrType].append([])
+            Attribute[AttrType][Insight].append(0)
+            for Level in range([30,40,50,60][Insight]):
+                if Insight == 3:
+                    Attribute[AttrType][Insight].append("undefined")
+                else:
+                    Attribute[AttrType][Insight].append(rlconf_dict["hjEChartsConfig"][""]["option"]["options"][Insight]["series"][AttrTypeIndex]["data"][Level][1])
+
+    return Attribute
+
 ##Get Resonant Type with given soup
 # getResonanceType :: Soup a -> Text ResonanceType
 def getResonanceType(soup):
@@ -87,6 +109,8 @@ def checkDiff(data, diff):
     for k in range(0, 50):
         if interpolate(0, data[1][40] + diff, 50, data[2][50], k + 1) != data[2][k + 1]:
             return False
+    if data[3][1] == "undefined":
+        return True
     for k in range(0, 60):
         if interpolate(0, data[2][50] + diff, 60, data[3][60], k + 1) != data[3][k + 1]:
             return False
@@ -215,7 +239,10 @@ typeNameDict = {
     "夏利": "Charlie",
     "婴儿蓝": "BabyBlue",
     "玛丽莲": "Sweetheart",
-    "X": "X",
+    "X": "X"
+        }
+
+typeNameDictLow = {
     "埃里克": "Erick",
     "小梅斯梅尔": "MesmerJr",
     "吵闹鬼": "Poltergeist",
@@ -258,12 +285,24 @@ typeNameDict = {
 # 
 # printInstance(Attribute, name, resType, "Shamane")
 
-ArcanistList = getArcanistList()
-for Arcanist in ArcanistList:
+# ArcanistList = getArcanistList()
+
+for Arcanist in typeNameDict:
     soup = getSoup("https://res1999.huijiwiki.com/wiki/"+Arcanist)
     name = getName(soup)
     resType = getResonanceType(soup)
     Attribute = parseArcanistAttribute(soup)
 
     printInstance(Attribute,name,resType,typeNameDict[Arcanist])
+
+for Arcanist in typeNameDictLow:
+    soup = getSoup("https://res1999.huijiwiki.com/wiki/"+Arcanist)
+    name = getName(soup)
+    resType = getResonanceType(soup)
+    Attribute = parseArcanistAttributeLow(soup)
+
+    printInstance(Attribute,name,resType,typeNameDictLow[Arcanist])
+
+
+
 
